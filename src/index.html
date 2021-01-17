@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>ECV example</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="main">
+      <div id="contacts">
+        <div id="contacts-header">
+          <p>Messages</p>
+          <div class="more-button"><img src="assets/more.svg" /></div>
+        </div>
+        <div id="contacts-list">
+          <div class="contact selected">
+            <img class="avatar" src="assets/group.svg" />
+            <div class="sumary-message">
+              <p class="contact-name"></p>
+              <p class="last-message"></p>
+            </div>
+            <p class="time"></p>
+          </div>
+        </div>
+        <div id="my-profile"></div>
+      </div>
+
+      <div id="chat">
+        <div id="chat-header">
+          <img class="avatar" src="assets/group_white.svg" />
+        </div>
+        <div class="chat-messages" id="prova">
+          <div class="message user-message">
+            <div class="text">
+              Another journey chamber way yet females man
+              <div class="time">12.37</div>
+            </div>
+          </div>
+          <div class="message friend-message">
+            <div class="text">
+              In it except to
+              <div class="time">12.37</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tools">
+          <div id="tools-input">
+            <input placeholder="Chat message" />
+            <div class="smiley"><img src="assets/smiley.svg" /></div>
+
+            <!-- <img src="assets/attachment.svg" />
+              <img id="send-button" src="assets/send.svg" /> -->
+          </div>
+          <div id="send-button"><img src="assets/send.svg" /></div>
+        </div>
+      </div>
+    </div>
+    <script src="user-utils.js"></script>
+    <script src="message-utils.js"></script>
+    <script src="sillyclient.js"></script>
+    <script src="code.js"></script>
+
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>
