@@ -77,7 +77,7 @@ server.on_room_info = function (info) {
     id: server.user_id,
     username: username,
     active: true,
-    avatar: `src/assets/avatar/user_${r}.png`,
+    avatar: avatar,
   }
 
   DB.users.push(u)
