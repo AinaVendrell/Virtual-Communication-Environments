@@ -1,21 +1,21 @@
 sendMessage = (input) => {
   if (input.value !== '') {
     {
-      if (Array.isArray(recivers)) var type = 'text'
+      if (contactSelected === server.room.name) var type = 'text'
       else var type = 'private'
       const msg = { type: type, username: 'jd', text: input.value }
-      server.sendMessage(JSON.stringify(msg), recivers)
 
-      if (Array.isArray(recivers)) var where = server.room.name
-      else var where = recivers
+      if (contactSelected === server.room.name)
+        server.sendMessage(JSON.stringify(msg), Object.keys(server.clients))
+      else server.sendMessage(JSON.stringify(msg), contactSelected)
 
-      showMessage(input.value, server.user_id, 'user-message', where)
+      showMessage(input.value, server.user_id, 'user-message', contactSelected)
       input.value = ''
     }
   }
 }
 
-showMessage = (text, author_id, className, where) => {
+showMessage = (text, author_id, className, conversation) => {
   if (text === '') return
   const time = new Date().toLocaleString('es-ES').substring(10, 15)
   const m = {
@@ -23,83 +23,69 @@ showMessage = (text, author_id, className, where) => {
     msg: text,
     time: time,
   }
+  // if it's the first message of the conversation we add an emprty array in the database with key of the reciver
+  if (!DB[conversation]) DB[conversation] = []
+  DB[conversation].push(m)
 
-  if (!DB[where]) DB[where] = []
-  DB[where].push(m)
-
-  if (Array.isArray(recivers)) var a = server.room.name
-  else var a = recivers
-
-  if (a === where) {
-    const templete = document.getElementById('templete')
-    const msg = templete.querySelector('.message').cloneNode(true)
-    msg.className = 'message ' + className
-    if (author_id !== server.user_id)
-      msg.querySelector('.name').innerText = author_id
-    msg.querySelector('.msg').innerText = text
-    msg.querySelector('.time').innerText = time
-
+  // if the message that we are showing belongs to the conversation that we have selected we show it
+  if (contactSelected === conversation) {
+    var isRoom = contactSelected === server.room.name
+    show(author_id, text, time, className, isRoom)
     const messagesContainer = document.querySelector('.chat-messages')
-    messagesContainer.appendChild(msg)
     if (className === 'user-message') messagesContainer.scrollTop = 1000000
   }
 
-  updateLastMessage(text, author_id, time, className, where)
+  // in all cases we what to update the last message of the left menu
+  updateLastMessage(text, author_id, time, className, conversation)
 }
 
-// undates the last message info of the messages list on the left
-updateLastMessage = (text, author_id, time, className, reciver) => {
-  const container = document.getElementById(reciver) // TODO: canviar room per variable
-  const lastMsg = container.querySelector('.last-message')
-  if (className === 'user-message') lastMsg.innerText = 'You: ' + text
-  else lastMsg.innerText = author_id + ': ' + text
-  container.querySelector('.time').innerText = time
-}
-
-loadPreviousMessages = (messages) => {
+loadPreviousMessages = (messages, isRoom) => {
   const messagesContainer = document.querySelector('.chat-messages')
   messagesContainer.innerHTML = ''
   var className = undefined
   messages.map((m) => {
     if (m.author === server.user_id) className = 'user-message'
     else className = 'friend-message'
-    const templete = document.getElementById('templete')
-    const msg = templete.querySelector('.message').cloneNode(true)
-    msg.className = 'message ' + className
-    if (m.author !== server.user_id)
-      msg.querySelector('.name').innerText = m.author
-    msg.querySelector('.msg').innerText = m.msg
-    msg.querySelector('.time').innerText = m.time
-    messagesContainer.appendChild(msg)
+    show(m.author, m.msg, m.time, className, isRoom)
   })
 
   messagesContainer.scrollTop = 1000000
   if (messages.length > 0) {
     var l = messages.length - 1
     var lastMsg = messages[l]
-    if (Array.isArray(recivers)) var a = server.room.name
-    else var a = recivers
-    updateLastMessage(lastMsg.msg, lastMsg.author, lastMsg.time, className, a)
+    updateLastMessage(
+      lastMsg.msg,
+      lastMsg.author,
+      lastMsg.time,
+      className,
+      contactSelected
+    )
   }
 }
 
-privateMessage = (text, author_id) => {
-  const m = {
-    author: author_id,
-    msg: text,
-    time: new Date().toLocaleString('es-ES').substring(10, 15),
+show = (author_id, text, time, className, isRoom) => {
+  const templete = document.getElementById('templete')
+  const msg = templete.querySelector('.message').cloneNode(true)
+  msg.className = 'message ' + className
+  if (author_id !== server.user_id && isRoom) {
+    var friendUsername = DB.users.find((u) => u.id === author_id).username
+    msg.querySelector('.name').innerText = friendUsername
   }
+  msg.querySelector('.msg').innerText = text
+  msg.querySelector('.time').innerText = time
+  const messagesContainer = document.querySelector('.chat-messages')
+  messagesContainer.appendChild(msg)
+}
 
-  if (!DB[author_id]) DB[author_id] = []
-  DB[author_id].push(m)
-
-  if (recivers === author_id) loadPreviousMessages(DB[author_id])
-  else
-    updateLastMessage(
-      text,
-      author_id,
-      new Date().toLocaleString('es-ES').substring(10, 15),
-      'friend-message',
-      author_id
-    )
+// undates the last message info of the messages list on the left
+updateLastMessage = (text, author_id, time, className, reciver) => {
+  const container = document.getElementById(reciver)
+  const lastMsg = container.querySelector('.last-message')
+  if (className === 'user-message') lastMsg.innerText = 'You: ' + text
+  else if (reciver !== server.room.name) lastMsg.innerText = text
+  else {
+    var friendUsername = DB.users.find((u) => u.id === author_id).username
+    lastMsg.innerText = friendUsername + ': ' + text
+  }
+  container.querySelector('.time').innerText = time
 }

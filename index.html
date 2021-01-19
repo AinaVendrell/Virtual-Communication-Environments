@@ -9,50 +9,75 @@
   </head>
   <body>
     <div id="main">
-      <div id="contacts">
-        <div id="contacts-header">
-          <p>Messages</p>
-          <div class="more-button"><img src="src/assets/more.svg" /></div>
-        </div>
-        <div id="contacts-list">
-          <div class="contact selected">
-            <img class="avatar" src="src/assets/group.svg" />
-            <div class="sumary-message">
-              <p class="contact-name"></p>
-              <p class="last-message"></p>
-            </div>
-            <p class="time"></p>
-          </div>
-        </div>
-        <div id="my-profile"></div>
-      </div>
-      <div id="chat">
-        <div id="chat-header">
-          <img class="avatar" src="src/assets/group_white.svg" />
-        </div>
-        <div class="chat-messages" id="prova">
-          <div class="message user-message">
-            <div class="text">
-              Another journey chamber way yet females man
-              <div class="time">12.37</div>
-            </div>
-          </div>
-          <div class="message friend-message">
-            <div class="text">
-              In it except to
-              <div class="time">12.37</div>
-            </div>
-          </div>
-        </div>
-        <div id="tools">
-          <div id="tools-input">
-            <input placeholder="Chat message" />
-            <div class="smiley"><img src="src/assets/smiley.svg" /></div>
-          </div>
-          <div id="send-button"><img src="src/assets/send.svg" /></div>
+      <div id="login">
+        <h1>Welcome back</h1>
+        <p>We are so excited to se you!</p>
+        <div id="loginInput">
+          <p>Username</p>
+          <input id="username" placeholder="Username" />
+          <p>Room Name</p>
+          <input id="roomname" placeholder="Room Name" />
+          <button id="login-button">LOGIN</button>
         </div>
       </div>
-      <div id="templete">
+      <div id="app" style="display: none">
+        <div id="contacts">
+          <div id="contacts-header">
+            <p>Messages</p>
+            <!-- <div class="more-button"><img src="src/assets/more.svg" /></div> -->
+          </div>
+          <div id="room">
+            <div class="contact selected">
+              <img class="avatar" src="src/assets/group.svg" />
+              <div class="sumary-message">
+                <p class="contact-name"></p>
+                <p class="last-message"></p>
+              </div>
+              <p class="time"></p>
+            </div>
+          </div>
+          <div id="contacts-list"></div>
+          <div id="my-profile">
+            <img class="avatar" />
+            <p></p>
+          </div>
+        </div>
+        <div id="chat">
+          <div id="chat-header">
+            <img class="avatar" src="src/assets/group_white.svg" />
+          </div>
+          <div class="chat-messages" id="prova">
+            <div class="message user-message">
+              <div class="text">
+                Another journey chamber way yet females man
+                <div class="time">12.37</div>
+              </div>
+            </div>
+            <div class="message friend-message">
+              <div class="text">
+                In it except to
+                <div class="time">12.37</div>
+              </div>
+            </div>
+          </div>
+          <div id="tools">
+            <div id="tools-input">
+              <input id="input-message" placeholder="Chat message" />
+              <div class="smiley"><img src="src/assets/smiley.svg" /></div>
+            </div>
+            <div id="send-button"><img src="src/assets/send.svg" /></div>
+          </div>
+        </div>
+      </div>
+      <div id="templete" style="display: none">
+        <div class="contact">
+          <img class="avatar" />
+          <div class="sumary-message">
+            <p class="contact-name"></p>
+            <p class="last-message"></p>
+          </div>
+          <p class="time"></p>
+        </div>
         <div class="message">
           <div class="text">
             <p class="name"></p>
@@ -62,6 +87,7 @@
         </div>
       </div>
     </div>
+    <script src="src/login.js"></script>
     <script src="src/user-utils.js"></script>
     <script src="src/message-utils.js"></script>
     <script src="src/sillyclient.js"></script>

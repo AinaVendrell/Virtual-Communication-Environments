@@ -1,8 +1,7 @@
 var DB = {}
+var contactSelected = []
 
-var recivers = []
-
-addRoomName = (roomName) => {
+addRoomName = () => {
   // add room name to the messages list on the left
   const room = document.querySelector('.contact')
   room.id = roomName
@@ -14,48 +13,46 @@ addRoomName = (roomName) => {
   document.querySelector('#chat-header').appendChild(name)
 }
 
-// function after reciving the room info that adds all the user contacts to the messages list on the left
+// after reciving the room info adds all the user contacts to the messages list on the left
 addUsers = (users) => {
   users.map((u) => {
-    addUser(u)
+    if (u.id !== server.user_id && u.active) addUser(u)
   })
 }
 
-addUser = (id) => {
-  const r = id % 24
-  var str = `<div class='contact' id=${id}>
-      <img class='avatar' src='src/assets/avatar/user_${r}.png' />
-      <div class='sumary-message'>
-        <p class='contact-name'>${id}</p>
-        <p class='last-message'></p>
-      </div>
-      <p class='time'></p>
-    </div>`
-
+addUser = (user) => {
+  DB.users.push(user)
+  const templete = document.getElementById('templete')
+  const contact = templete.querySelector('.contact').cloneNode(true)
+  contact.id = user.id
+  contact.querySelector('.contact-name').innerText = user.username
+  contact.querySelector('.avatar').src = user.avatar
   const contactsList = document.querySelector('#contacts-list')
-  contactsList.insertAdjacentHTML('beforeend', str)
+  const firstChild = contactsList.firstChild
+  if (firstChild) contactsList.insertBefore(contact, firstChild)
+  else contactsList.appendChild(contact)
   contactsList.scrollTop = 1000000
 }
 
-// adds the profile of the new users
-addProfile = (id) => {
-  const r = id % 24
-  var str = `
-    <img class='avatar' src='src/assets/avatar/user_${r}.png' />
-    <p>${id}</p>
-`
-
+// adds the profile of the user
+addProfile = (user) => {
   const profile = document.querySelector('#my-profile')
-  profile.insertAdjacentHTML('beforeend', str)
+  profile.querySelector('.avatar').src = user.avatar
+  profile.querySelector('p').innerText = user.username
 }
 
 // deletes the profile of the users that leave the room
 deleteUser = (id) => {
   const container = document.querySelector('#contacts-list')
   const contact = document.getElementById(id)
+  contact.style = 'pointer-events:none; opacity: 0.3'
   contact && container.removeChild(contact)
+  contact && container.appendChild(contact)
+
+  DB.users.find((u) => u.id === id).active = false
 }
 
+//
 selectUser = (contacts, selectedContact) => {
   var id = selectedContact.id
   selectedContact.className = 'contact selected'
@@ -65,15 +62,15 @@ selectUser = (contacts, selectedContact) => {
     if (el !== selectedContact) el.className = 'contact'
   })
 
-  const r = id % 24
-  if (id == server.room.name) var image = 'src/assets/group_white.svg'
-  else var image = `src/assets/avatar/user_${r}.png`
+  if (id === server.room.name) var image = 'src/assets/group_white.svg'
+  else var image = DB.users.find((u) => u.id === id).avatar
 
   // update header with the info of the selected contact
   const headerInfo = document.querySelector('#chat-header')
   const currentName = headerInfo.querySelector('h1')
   var newName = document.createElement('h1')
-  newName.innerText = id
+  if (id === server.room.name) newName.innerText = server.room.name
+  else newName.innerText = DB.users.find((u) => u.id === id).username
   headerInfo.replaceChild(newName, currentName)
 
   const currentImage = headerInfo.querySelector('img')
@@ -82,9 +79,7 @@ selectUser = (contacts, selectedContact) => {
   newImage.src = image
   headerInfo.replaceChild(newImage, currentImage)
 
-  if (id === server.room.name) recivers = Object.keys(server.clients)
-  else recivers = id
-
-  if (Array.isArray(recivers)) loadPreviousMessages(DB[server.room.name] || [])
-  else loadPreviousMessages(DB[recivers] || [])
+  contactSelected = id
+  var isRoom = id === server.room.name
+  loadPreviousMessages(DB[contactSelected] || [], isRoom)
 }

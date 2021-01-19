@@ -32,6 +32,17 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 #contacts {
@@ -65,7 +76,7 @@ body {
 
 #contacts-list {
   width: 100%;
-  height: calc(100% - 174px);
+  height: calc(100% - 244px);
   display: flex;
   flex-direction: column;
   background-color: var(--white-color);
@@ -261,7 +272,7 @@ body {
   background: var(--white-color);
   align-items: center;
   border-radius: 25px;
-  box-shadow: 5px 8px 15px var(--time-color);
+  box-shadow: 5px 8px 15px var(--shadow-color);
   align-items: center;
 }
 
@@ -308,4 +319,49 @@ p {
 .avatar {
   height: 48px;
   width: 48px;
+}
+
+
+
+#login {
+  width: 400px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--main-color);
+  box-shadow: 5px 8px 15px var(--time-friend-color);
+  flex-direction: column;
+}
+
+#login h1 {
+  color: var(--white-color);
+  margin: 5px;
+}
+
+#login p {
+  color:var(--select-active);
+  margin-bottom: 10px;
+}
+
+#loginInput {
+  display: flex;
+  flex-direction: column;
+}
+
+#loginInput input {
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+
+#loginInput p {
+  color:var(--select-active);
+  margin: 10px 0px 2px 0px;
+}
+
+#loginInput button {
+  margin: 10px;
 }
