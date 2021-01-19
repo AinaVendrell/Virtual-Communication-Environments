@@ -16,10 +16,18 @@ server.on_ready = (my_id) => {
 }
 
 server.on_message = (author_id, msg) => {
-  //   console.log('msg', msg)
-  //   console.log('author_id', author_id)
   const data = JSON.parse(msg)
-  showMessage(data.text, author_id, 'friend-message')
+  if (data[server.room.name]) {
+    DB = data
+    loadPreviousMessages(DB[server.room.name])
+  } else if (data.type === 'request') {
+    server.sendMessage(JSON.stringify(DB), author_id)
+  }
+  if (data.type === 'text')
+    showMessage(data.text, author_id, 'friend-message', server.room.name)
+  else if (data.type === 'private') {
+    privateMessage(data.text, author_id)
+  }
 }
 
 server.on_user_connected = (user_id) => {
@@ -42,6 +50,9 @@ server.on_user_disconnected = (user_id) => {
 }
 
 server.on_room_info = function (info) {
+  DB.users = []
+  DB[server.room.name] = []
+
   console.log('info', info)
   other_users = info.clients.filter((u) => {
     return u != server.user_id
@@ -49,6 +60,14 @@ server.on_room_info = function (info) {
   addRoomName(info.name)
   addUsers(other_users)
   addProfile(server.user_id)
+  recivers = Object.keys(server.clients)
+
+  const msg = { type: 'request', username: server.user_id }
+
+  var oldestClient = Object.keys(server.clients)[0]
+  if (oldestClient !== server.user_id) {
+    server.sendMessage(JSON.stringify(msg), oldestClient)
+  }
 
   contacts = document.querySelectorAll('.contact')
   contacts.forEach((c) => {

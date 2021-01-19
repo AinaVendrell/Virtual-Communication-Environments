@@ -1,3 +1,7 @@
+var DB = {}
+
+var recivers = []
+
 addRoomName = (roomName) => {
   // add room name to the messages list on the left
   const room = document.querySelector('.contact')
@@ -20,9 +24,9 @@ addUsers = (users) => {
 addUser = (id) => {
   const r = id % 24
   var str = `<div class='contact' id=${id}>
-      <img class='avatar' src='assets/avatar/user_${r}.png' />
+      <img class='avatar' src='src/assets/avatar/user_${r}.png' />
       <div class='sumary-message'>
-        <h1 class='contact-name'>${id}</h1>
+        <p class='contact-name'>${id}</p>
         <p class='last-message'></p>
       </div>
       <p class='time'></p>
@@ -37,7 +41,7 @@ addUser = (id) => {
 addProfile = (id) => {
   const r = id % 24
   var str = `
-    <img class='avatar' src='assets/avatar/user_${r}.png' />
+    <img class='avatar' src='src/assets/avatar/user_${r}.png' />
     <p>${id}</p>
 `
 
@@ -62,8 +66,8 @@ selectUser = (contacts, selectedContact) => {
   })
 
   const r = id % 24
-  if (id == server.room.name) var image = 'assets/group_white.svg'
-  else var image = `assets/avatar/user_${r}.png`
+  if (id == server.room.name) var image = 'src/assets/group_white.svg'
+  else var image = `src/assets/avatar/user_${r}.png`
 
   // update header with the info of the selected contact
   const headerInfo = document.querySelector('#chat-header')
@@ -77,4 +81,10 @@ selectUser = (contacts, selectedContact) => {
   newImage.className = 'avatar'
   newImage.src = image
   headerInfo.replaceChild(newImage, currentImage)
+
+  if (id === server.room.name) recivers = Object.keys(server.clients)
+  else recivers = id
+
+  if (Array.isArray(recivers)) loadPreviousMessages(DB[server.room.name] || [])
+  else loadPreviousMessages(DB[recivers] || [])
 }

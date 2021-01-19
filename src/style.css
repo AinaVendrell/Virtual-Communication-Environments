@@ -226,7 +226,10 @@ body {
   color: var(--white-color)
 }
 
+/* 
+.text .msg {
 
+} */
 
 .friend-message .text .name {
   color: var(--main-color)
