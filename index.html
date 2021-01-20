@@ -1,85 +1,44 @@
 <html>
   <head>
-    <title>ECV example</title>
+    <title>CHAT</title>
     <link rel="stylesheet" href="src/style.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto"
       rel="stylesheet"
     />
-    <style>
-      .dropbtn {
-        background-color: #4caf50;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-      }
-
-      .dropdown {
-        position: relative;
-        display: inline-block;
-      }
-
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 328px;
-        height: 200px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        overflow: auto;
-        left: -100px;
-      }
-
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-      }
-
-      .dropdown-content a:hover {
-        background-color: #f1f1f1;
-      }
-
-      .dropdown img {
-        height: 50px;
-        width: 50px;
-      }
-
-      .dropdown:hover .dropdown-content {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .dropdown:hover .dropbtn {
-        background-color: #3e8e41;
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="main">
-      <div id="login">
-        <h1>Welcome back</h1>
-        <p>We are so excited to se you!</p>
+      <div id="login" style="display: none">
+        <h1>Welcome!</h1>
+        <p>We're so happy to see you!</p>
+        <div class="dropdown">
+          <button class="dropbtn">
+            <img src="src/assets/user_icon.png" />
+          </button>
+          <div class="dropdown-content"></div>
+        </div>
+        <p class="error-avatar"></p>
+
         <div id="loginInput">
           <p>Username</p>
           <input id="username" placeholder="Username" />
+          <p class="error-name"></p>
           <p>Room Name</p>
           <input id="roomname" placeholder="Room Name" />
+          <p class="error-room"></p>
           <button id="login-button">LOGIN</button>
         </div>
-        <div class="dropdown">
-          <button class="dropbtn"><img src="src/assets/more.svg" /></button>
-          <div class="dropdown-content"></div>
-        </div>
       </div>
-      <div id="app" style="display: none">
+      <div id="app">
         <div id="contacts">
           <div id="contacts-header">
-            <p>Messages</p>
+            <h1>Messages</h1>
             <!-- <div class="more-button"><img src="src/assets/more.svg" /></div> -->
           </div>
           <div id="room">
@@ -102,25 +61,9 @@
           <div id="chat-header">
             <img class="avatar" src="src/assets/group_white.svg" />
           </div>
-          <div class="chat-messages" id="prova">
-            <div class="message user-message">
-              <div class="text">
-                Another journey chamber way yet females man
-                <div class="time">12.37</div>
-              </div>
-            </div>
-            <div class="message friend-message">
-              <div class="text">
-                In it except to
-                <div class="time">12.37</div>
-              </div>
-            </div>
-          </div>
+          <div class="chat-messages"></div>
           <div id="tools">
-            <div id="tools-input">
-              <input id="input-message" placeholder="Chat message" />
-              <div class="smiley"><img src="src/assets/smiley.svg" /></div>
-            </div>
+            <input data-meteor-emoji="true" type="text" id="input-message" />
             <div id="send-button"><img src="src/assets/send.svg" /></div>
           </div>
         </div>
@@ -143,6 +86,8 @@
         </div>
       </div>
     </div>
+
+    <script src="src/emojiPicker.js"></script>
     <script src="src/login.js"></script>
     <script src="src/user-utils.js"></script>
     <script src="src/message-utils.js"></script>

@@ -101,3 +101,9 @@ server.on_room_info = function (info) {
     server.sendMessage(JSON.stringify(msg), oldestClient)
   }
 }
+
+var roomName = 'prova'
+var username = 'user1'
+var avatar = `src/assets/avatar/user_0.png`
+
+connectServer()
