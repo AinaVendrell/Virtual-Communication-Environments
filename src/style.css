@@ -178,8 +178,7 @@ body {
 
 #chat-header h1 {
   color: var(--white-color);
-  margin-left: 15px;
-  font-size: 18px;
+  margin-left: 13px;
 }
 
 .chat-messages {
@@ -324,12 +323,15 @@ p {
   margin: 0;
 }
 
+h1 {
+  font-weight: 400;
+  font-size: 17px;
+}
+
 .avatar {
   height: 48px;
   width: 48px;
 }
-
-
 
 #login {
   width: 400px;
@@ -345,14 +347,7 @@ p {
 #login h1 {
   color: var(--main-color);
   margin: 5px;
-}
-
-#loginInput .error-room, #loginInput .error-name, #login .error-avatar {
-  color:red;
-  margin-bottom: 10px;
-  font-weight: 300;
-  margin: 2px 0px;
-  font-size: 14px;
+  font-size: 28px;
 }
 
 #login p {
@@ -361,12 +356,20 @@ p {
   font-weight: 400;
 }
 
-#loginInput {
+#login-input {
   display: flex;
   flex-direction: column;
 }
 
-#loginInput input {
+#login-input .error-room, #login-input .error-name, #login .error-avatar {
+  color:red;
+  margin-bottom: 10px;
+  font-weight: 300;
+  margin: 2px 0px;
+  font-size: 14px;
+}
+
+#login-input input {
   width: 200px;
   height: 35px;
   border: 1px solid var(--grey-color);
@@ -375,24 +378,29 @@ p {
   border-radius: 2px;
 }
 
-#loginInput input:focus {
+#login-input input:focus {
   outline-width: 2;
   border-color: #ff5e00;
 }
 
 
-#loginInput p {
+#login-input p {
   color:var(--grey-color);
   margin: 10px 0px 2px 0px;
 }
 
-#loginInput button {
+#login-input button {
   margin: 10px;
   background: var(--main-color);
   border: none;
   padding: 10px;
   border-radius: 3px;
   color: var(--white-color);
+  cursor: pointer;
+}
+
+#login-input button:hover {
+  background-color: #ff5e00d0;;
 }
 
 

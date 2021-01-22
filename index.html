@@ -14,7 +14,7 @@
   </head>
   <body>
     <div id="main">
-      <div id="login" style="display: none">
+      <div id="login">
         <h1>Welcome!</h1>
         <p>We're so happy to see you!</p>
         <div class="dropdown">
@@ -35,7 +35,7 @@
           <button id="login-button">LOGIN</button>
         </div>
       </div>
-      <div id="app">
+      <div id="app" style="display: none">
         <div id="contacts">
           <div id="contacts-header">
             <h1>Messages</h1>
@@ -43,7 +43,7 @@
           </div>
           <div id="room">
             <div class="contact selected">
-              <img class="avatar" src="src/assets/group.svg" />
+              <img class="avatar" src="src/assets/room.svg" />
               <div class="sumary-message">
                 <p class="contact-name"></p>
                 <p class="last-message"></p>
@@ -59,11 +59,18 @@
         </div>
         <div id="chat">
           <div id="chat-header">
-            <img class="avatar" src="src/assets/group_white.svg" />
+            <img class="avatar" src="src/assets/room_white.svg" />
+            <h1></h1>
           </div>
           <div class="chat-messages"></div>
           <div id="tools">
-            <input data-meteor-emoji="true" type="text" id="input-message" />
+            <input
+              placeholder="Type a message"
+              data-meteor-emoji="true"
+              type="text"
+              id="input-message"
+              autofocus
+            />
             <div id="send-button"><img src="src/assets/send.svg" /></div>
           </div>
         </div>
@@ -86,12 +93,12 @@
         </div>
       </div>
     </div>
-
-    <script src="src/emojiPicker.js"></script>
+    <script src="src/globals.js"></script>
+    <script src="src/utils/emojiPicker.js"></script>
     <script src="src/login.js"></script>
     <script src="src/user-utils.js"></script>
     <script src="src/message-utils.js"></script>
-    <script src="src/sillyclient.js"></script>
-    <script src="src/code.js"></script>
+    <script src="src/utils/sillyclient.js"></script>
+    <script src="src/server.js"></script>
   </body>
 </html>

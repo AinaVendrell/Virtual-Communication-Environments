@@ -1,16 +1,12 @@
-var DB = {}
-var contactSelected = []
-
+// add room name to the messages list on the left  and  add room name to the header
 addRoomName = () => {
-  // add room name to the messages list on the left
   const room = document.querySelector('.contact')
   room.id = roomName
+  room.addEventListener('click', (e) => selectUser(room))
   room.querySelector('.contact-name').innerText = roomName
-
-  // add room name to the header
-  var name = document.createElement('h1')
-  name.innerText = roomName
-  document.querySelector('#chat-header').appendChild(name)
+  document
+    .getElementById('chat-header')
+    .querySelector('h1').innerText = roomName
 }
 
 // after reciving the room info adds all the user contacts to the messages list on the left
@@ -24,10 +20,12 @@ addUser = (user) => {
   DB.users.push(user)
   const templete = document.getElementById('templete')
   const contact = templete.querySelector('.contact').cloneNode(true)
+  contact.addEventListener('click', (e) => selectUser(contact))
   contact.id = user.id
   contact.querySelector('.contact-name').innerText = user.username
   contact.querySelector('.avatar').src = user.avatar
   const contactsList = document.querySelector('#contacts-list')
+  // to keep the disconnected users on the bottom the new users will be added at the top of the list
   const firstChild = contactsList.firstChild
   if (firstChild) contactsList.insertBefore(contact, firstChild)
   else contactsList.appendChild(contact)
@@ -41,45 +39,43 @@ addProfile = (user) => {
   profile.querySelector('p').innerText = user.username
 }
 
-// deletes the profile of the users that leave the room
+/*
+ * when a user leaves the chat its contact will be disabled but the users that were in the chat with him
+ * will still be able to see its contact but with less opacity and they will not be able to chat with him
+ */
 deleteUser = (id) => {
   const container = document.querySelector('#contacts-list')
   const contact = document.getElementById(id)
-  contact.style = 'pointer-events:none; opacity: 0.3'
-  contact && container.removeChild(contact)
-  contact && container.appendChild(contact)
-
+  if (contact) {
+    contact.style = 'pointer-events:none; opacity: 0.3'
+    container.removeChild(contact)
+    container.appendChild(contact)
+  }
   DB.users.find((u) => u.id === id).active = false
 }
 
-//
-selectUser = (contacts, selectedContact) => {
-  var id = selectedContact.id
+selectUser = (selectedContact) => {
+  const id = selectedContact.id
+  contactSelected = id
   selectedContact.className = 'contact selected'
 
   // unselect the other contacts
-  contacts.forEach((el) => {
+  document.querySelectorAll('.contact').forEach((el) => {
     if (el !== selectedContact) el.className = 'contact'
   })
 
-  if (id === server.room.name) var image = 'src/assets/group_white.svg'
-  else var image = DB.users.find((u) => u.id === id).avatar
-
   // update header with the info of the selected contact
-  const headerInfo = document.querySelector('#chat-header')
-  const currentName = headerInfo.querySelector('h1')
-  var newName = document.createElement('h1')
-  if (id === server.room.name) newName.innerText = server.room.name
-  else newName.innerText = DB.users.find((u) => u.id === id).username
-  headerInfo.replaceChild(newName, currentName)
+  if (id === roomName) {
+    var newName = roomName
+    var image = 'src/assets/room_white.svg'
+  } else {
+    var newName = DB.users.find((u) => u.id === id).username
+    var image = DB.users.find((u) => u.id === id).avatar
+  }
+  document.querySelector('#chat-header').querySelector('h1').innerText = newName
+  document.querySelector('#chat-header').querySelector('img').src = image
 
-  const currentImage = headerInfo.querySelector('img')
-  var newImage = document.createElement('img')
-  newImage.className = 'avatar'
-  newImage.src = image
-  headerInfo.replaceChild(newImage, currentImage)
-
-  contactSelected = id
-  var isRoom = id === server.room.name
+  // load messages with the selected contact
+  var isRoom = id === roomName
   loadPreviousMessages(DB[contactSelected] || [], isRoom)
 }

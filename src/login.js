@@ -1,11 +1,24 @@
-// var roomName = undefined
-// var username = undefined
-// var avatar = undefined
-
 new MeteorEmoji()
 
 const loginButton = document.getElementById('login-button')
 loginButton.addEventListener('click', (e) => logIn())
+
+var avatarList = ''
+for (var i = 0; i <= 23; i++) {
+  avatarList =
+    avatarList +
+    `<a class="avatar-choice">
+        <img src="src/assets/avatar/user_${i}.png" style="height: 50px;width: 50px;" />
+      </a>`
+}
+document.querySelector('.dropdown-content').innerHTML = avatarList
+
+var avatarChoice = document.querySelectorAll('.avatar-choice')
+avatarChoice.forEach((a) => {
+  a.addEventListener('click', (e) => {
+    selectAvatar(a)
+  })
+})
 
 logIn = () => {
   const login = document.getElementById('login')
@@ -24,8 +37,8 @@ logIn = () => {
       login.querySelector('.error-avatar').innerText = 'Please select an avatar'
     else login.querySelector('.error-avatar').innerText = ''
   } else {
-    login.style = 'display: none'
     const app = document.getElementById('app')
+    login.style.display = 'none'
     app.style = 'display: true'
     username = usernameInput.value
     roomName = roomnameInput.value
@@ -33,27 +46,8 @@ logIn = () => {
   }
 }
 
-var avatarList = ''
-for (var i = 0; i <= 23; i++) {
-  avatarList =
-    avatarList +
-    `<a class="avatar-choisse">
-        <img src="src/assets/avatar/user_${i}.png" style="height: 50px;width: 50px;" />
-      </a>`
-}
-document.querySelector('.dropdown-content').innerHTML = avatarList
-
-var avatarChoisse = document.querySelectorAll('.avatar-choisse')
-avatarChoisse.forEach((a) => {
-  a.addEventListener('click', (e) => {
-    selectAvatar(a)
-  })
-})
-
 selectAvatar = (a) => {
-  console.log('aaa', a)
   avatar = a.querySelector('img').src
-  console.log('avaaatar', avatar)
   var img = document.querySelector('.dropbtn').querySelector('img')
   img.src = avatar
 }
